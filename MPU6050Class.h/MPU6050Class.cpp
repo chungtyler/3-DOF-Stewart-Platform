@@ -71,9 +71,14 @@ struct MPU6050Class::XYZValues MPU6050Class::getAccValues() {
   Wire.write(0x3B);
   Wire.endTransmission(false);
   Wire.requestFrom(MPU, 6, true);
-  newAccValues.X = (Wire.read() << 8 | Wire.read()) / 16384.0;
-  newAccValues.Y = (Wire.read() << 8 | Wire.read()) / 16384.0;
-  newAccValues.Z = (Wire.read() << 8 | Wire.read()) / 16384.0;
+  int16_t rawX = (Wire.read() << 8) | Wire.read();
+  int16_t rawY = (Wire.read() << 8) | Wire.read();
+  int16_t rawZ = (Wire.read() << 8) | Wire.read();
+   
+  newAccValues.X = rawX / 16384.0;
+  newAccValues.Y = rawY / 16384.0;
+  newAccValues.Z = rawZ / 16384.0;
+   
   return newAccValues;
 }
 
@@ -84,9 +89,14 @@ struct MPU6050Class::XYZValues MPU6050Class::getGyroValues() {
   Wire.write(0x43);
   Wire.endTransmission(false);
   Wire.requestFrom(MPU, 6, true);
-  newGyroValues.X = (Wire.read() << 8 | Wire.read()) / 131.0;
-  newGyroValues.Y = (Wire.read() << 8 | Wire.read()) / 131.0;
-  newGyroValues.Z = (Wire.read() << 8 | Wire.read()) / 131.0;
+  int16_t rawX = (Wire.read() << 8) | Wire.read();
+  int16_t rawY = (Wire.read() << 8) | Wire.read();
+  int16_t rawZ = (Wire.read() << 8) | Wire.read();
+
+  newGyroValues.X = rawX / 131.0;
+  newGyroValues.Y = rawY / 131.0;
+  newGyroValues.Z = rawZ / 131.0;
+   
   return newGyroValues;
 }
 
